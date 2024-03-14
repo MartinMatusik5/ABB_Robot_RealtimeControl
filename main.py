@@ -23,7 +23,7 @@ if __name__ == '__main__':
         while True:
             sensor_msg.header.seqno += 1
             sensor_msg.planned.cartesian.pos.x = 1000
-            sensor_msg.planned.cartesian.pos.y = random.uniform(-100, 100)
+            sensor_msg.planned.cartesian.pos.y = random.uniform(-200, 200)
             sensor_msg.planned.cartesian.pos.z = 350
             sensor_msg.planned.cartesian.euler.x = 0
             sensor_msg.planned.cartesian.euler.y = 0
