@@ -2,6 +2,7 @@ import socket
 import egm.egm_pb2 as abbegm
 import pygame
 from time import sleep
+import threading
 
 # Sampling period in seconds
 dt = 0.1
@@ -35,9 +36,23 @@ print(joysticks[0].get_numaxes())
 control_mode = "CARTESIAN"
 lock_mode = False
 
+def gripper():
+    gripper_state = "opened"
+    while True: 
+        if joysticks[0].get_button(0) and gripper_state == "opened": 
+            gripper_state = "closed"
+            print("close")
+        elif not joysticks[0].get_button(0) and gripper_state == "closed":  
+            gripper_state = "opened"
+            print("open")
+
 if __name__ == '__main__':
 
     try:
+
+        # create gripper thread
+        threading.Thread(target=gripper, name="gripper", daemon=True).start()
+
         while True:
             pygame.event.pump()
 
