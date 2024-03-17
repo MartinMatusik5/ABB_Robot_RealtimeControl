@@ -51,7 +51,7 @@ if __name__ == '__main__':
     try:
 
         # create gripper thread
-        threading.Thread(target=gripper, name="gripper", daemon=True).start()
+        #threading.Thread(target=gripper, name="gripper", daemon=True).start()
 
         while True:
             pygame.event.pump()
