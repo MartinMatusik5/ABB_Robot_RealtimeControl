@@ -36,6 +36,19 @@ print(joysticks[0].get_numaxes())
 control_mode = "CARTESIAN"
 lock_mode = False
 
+# Původní hodnoty
+original_values = {"offset_x": 0, "offset_y": 0, "offset_z": 0, "offset_rx": 0, "offset_ry": 0, "offset_rz": 0}
+
+def reset_values():
+    global offset_x, offset_y, offset_z, offset_rx, offset_ry, offset_rz
+    offset_x = original_values["offset_x"]
+    offset_y = original_values["offset_y"]
+    offset_z = original_values["offset_z"]
+    offset_rx = original_values["offset_rx"]
+    offset_ry = original_values["offset_ry"]
+    offset_rz = original_values["offset_rz"]
+    print("Hodnoty obnoveny")
+
 def gripper():
     gripper_state = "opened"
     while True: 
@@ -49,8 +62,7 @@ def gripper():
 if __name__ == '__main__':
 
     try:
-
-        # create gripper thread
+        # Vytvoření vlákna pro ovládání gripperu
         #threading.Thread(target=gripper, name="gripper", daemon=True).start()
 
         while True:
@@ -66,28 +78,9 @@ if __name__ == '__main__':
                 offset_ry += joysticks[0].get_axis(1) * rotation_speed * dt
                 offset_rz += joysticks[0].get_axis(5) * rotation_speed * dt   
         
-        #    # Stisknutí tlačítka
-        #     if joysticks[0].get_button(2):  
-        #         if not lock_mode: 
-        #             if  control_mode == "CARTESIAN":
-        #                 control_mode = "EULER"
-        #                 print("Režim EULER zapnut")
-        #             else:
-        #                 control_mode = "CARTESIAN"
-        #                 print("Režim CARTESIAN zapnut")
-        #         lock_mode = True
-        #     else: 
-        #         lock_mode = False
-
-        #     #Pokud je aktivovaný režim "CARTESIAN" nebo "EULER"
-        #     if control_mode == "CARTESIAN":
-        #         offset_x += joysticks[0].get_axis(1) * max_speed * dt
-        #         offset_y += joysticks[0].get_axis(0) * max_speed * dt
-        #         offset_z += joysticks[0].get_axis(5) * max_speed * dt
-        #     else:
-        #         offset_rx += joysticks[0].get_axis(0) * rotation_speed * dt
-        #         offset_ry += joysticks[0].get_axis(1) * rotation_speed * dt
-        #         offset_rz += joysticks[0].get_axis(5) * rotation_speed * dt
+            # Tlačítko pro resetování hodnot offsetu
+            if joysticks[0].get_button(26):  
+                reset_values()
 
             sensor_msg.header.seqno += 1
             sensor_msg.planned.cartesian.pos.x = offset_x
